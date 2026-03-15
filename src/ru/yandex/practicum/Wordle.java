@@ -1,5 +1,8 @@
 package ru.yandex.practicum;
 
+import java.io.FileReader;
+import java.nio.charset.StandardCharsets;
+import java.util.Scanner;
 /*
 в главном классе нам нужно:
     создать лог-файл (он должен передаваться во все классы)
@@ -11,7 +14,41 @@ package ru.yandex.practicum;
  */
 public class Wordle {
 
+    private static final Scanner scanner = new Scanner(System.in);
+
     public static void main(String[] args) {
+        try {
+
+            FileReader reader = new FileReader("words_ru.txt", StandardCharsets.UTF_8);
+            WordleDictionary dictionary = WordleDictionaryLoader.load(reader);
+
+            WordleGame game = new WordleGame(dictionary.getRandomWord(), Constants.STEPS, dictionary);
+            String word = "";
+            System.out.println("Добро пожаловать в Wordle! Для начала игры введите слово:");
+            while (!game.gameOver()) {
+                word = scanner.nextLine();
+                if (word.isEmpty()) {
+                    continue;
+                    // todo: Реализовать подсказки
+                }
+                try {
+                    String stepResult = game.makeStep(word);
+                    System.out.println(stepResult);
+                } catch (WordNotFoundException e) {
+                    System.out.println("Такого слова нет в словаре! Введите новое:");
+                }
+            }
+
+            if (game.isWin()) {
+                System.out.println("Вы угадали слово. Поздравляем!");
+                return;
+            }
+            // else
+            System.out.println("Попытки закончились. Загаданное слово - " + game.getAnswer() + ". Вы проиграли!");
+
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
 
     }
 

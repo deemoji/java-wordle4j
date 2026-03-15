@@ -14,10 +14,51 @@ package ru.yandex.practicum;
  */
 public class WordleGame {
 
-    private String answer;
+    private final String answer;
 
     private int steps;
 
-    private WordleDictionary dictionary;
+    private final WordleDictionary dictionary;
+
+    private boolean isWin = false;
+
+    public WordleGame(String answer, int steps, WordleDictionary dictionary) {
+        this.answer = answer;
+        this.steps = steps;
+        this.dictionary = dictionary;
+    }
+
+    public String getAnswer() {
+        return answer;
+    }
+    public boolean gameOver() {
+        return steps == 0 || isWin;
+    }
+
+    public boolean isWin() {
+        return isWin;
+    }
+
+    public String makeStep(String guessWord) throws WordNotFoundException {
+        if (gameOver()) {
+            throw new ExtraStepException("Попытка сделать лишний ход.\n");
+        }
+
+        if (answer.length() != guessWord.length()) {
+            throw new WordNotFoundException("Слово <" + guessWord + "> отсутствует в словаре!");
+        }
+
+        if (guessWord.equals(answer)) {
+            steps--;
+            isWin = true;
+            return "+".repeat(Constants.WORD_LENGTH);
+        }
+        if (dictionary.contains(guessWord)) {
+            steps--;
+            return WordleDictionary.compare(answer, guessWord);
+        }
+
+        throw new WordNotFoundException("Слово <" + guessWord + "> отсутствует в словаре!");
+    }
 
 }
