@@ -1,21 +1,29 @@
 package ru.yandex.practicum;
 
 import static org.junit.jupiter.api.Assertions.*;
+
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
 
+import java.io.PrintWriter;
 import java.util.List;
 
 public class WordleGameTest {
 
-    private WordleGame logic;
-    private WordleDictionary dictionary = new WordleDictionary(List.of("ааааа", "ббббб", "ввввв", "абвгд"));
+    private PrintWriter writer;
+    private WordleDictionary dictionary;
     private String answer = "абвгд";
+    private WordleGame logic;
+
 
     @BeforeEach
     public void beforeEach() {
-        logic = new WordleGame(answer, 3, dictionary);
+        writer = new PrintWriter(System.out);
+        dictionary  = new WordleDictionary(List.of("ааааа", "ббббб", "ввввв", "абвгд"), writer);
+        logic = new WordleGame(answer, 3, dictionary, writer);
     }
+
 
     @Test
     void testCheckGameOverAndWinIsTrue() {

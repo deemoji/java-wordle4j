@@ -1,6 +1,7 @@
 package ru.yandex.practicum;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.io.Reader;
 import java.io.BufferedReader;
 
@@ -11,15 +12,16 @@ import java.io.BufferedReader;
  */
 public class WordleDictionaryLoader {
 
-    public static WordleDictionary load(Reader reader) throws IOException, WordleDictionaryIsEmptyException {
+    public static WordleDictionary load(Reader reader, PrintWriter logWriter) throws IOException, WordleDictionaryIsEmptyException {
         try (BufferedReader bufferedReader = new BufferedReader(reader)) {
-            WordleDictionary dictionary = new WordleDictionary();
+            WordleDictionary dictionary = new WordleDictionary(logWriter);
 
             String word;
             while ((word = bufferedReader.readLine()) != null) {
                 dictionary.add(word);
             }
             if (dictionary.isEmpty()) {
+                logWriter.println("ОШИБКА: Словарь пуст! Проверьте содержимое файла и попробуйте снова");
                 throw new WordleDictionaryIsEmptyException("");
             }
             return dictionary;

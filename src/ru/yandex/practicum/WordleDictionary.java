@@ -1,10 +1,8 @@
 package ru.yandex.practicum;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.HashMap;
-import java.util.Random;
+import java.io.PrintWriter;
+import java.util.*;
+
 /*
 этот класс содержит в себе список слов List<String>
     его методы похожи на методы списка, но учитывают особенности игры
@@ -12,27 +10,79 @@ import java.util.Random;
  */
 public class WordleDictionary {
 
-    private List<String> words = new ArrayList<>();
+    private final List<String> words;
+    private final PrintWriter logWriter;
 
-    public WordleDictionary() {
-
+    public WordleDictionary(PrintWriter logWriter) {
+        this.words = new ArrayList<>();
+        this.logWriter = logWriter;
     }
 
-    public WordleDictionary(List<String> words) {
+    public WordleDictionary(List<String> words, PrintWriter logWriter) {
         this.words = words;
+        this.logWriter = logWriter;
     }
 
     public String[] getWords() {
         return words.toArray(words.toArray(new String[0]));
     }
 
+    public boolean isEmpty() {
+        return words.isEmpty();
+    }
+
     public String getRandomWord() throws WordleDictionaryIsEmptyException {
         if (words.isEmpty()) {
+            logWriter.println("ОШИБКА: Попытка получить случайный элемент в пустом словаре!");
             throw new WordleDictionaryIsEmptyException("Словарь пуст");
         }
         Random random = new Random();
         return words.get(random.nextInt(words.size()));
     }
+
+    public List<String> getFilteredWords(Set<Character> bannedChars,
+                                         Set<Character> correctChars,
+                                         Character[] correctPositions,
+                                         Set<Character>[] wrongPositions) {
+        List<String> filteredWords = new ArrayList<>();
+
+        for (String word : words) {
+            boolean wordToFilter = false;
+            for(int i = 0; i < word.length(); i++) {
+                if (bannedChars.contains(word.charAt(i))) {
+                    wordToFilter = true;
+                    break;
+                }
+            }
+            if (wordToFilter) { continue; }
+
+            for (char ch : correctChars) {
+                if (word.indexOf(ch) == -1) {
+                    wordToFilter = true;
+                    break;
+                }
+            }
+
+            for (int i = 0; i < correctPositions.length; i++) {
+                if (correctPositions[i] != null && word.charAt(i) != correctPositions[i]) {
+                    wordToFilter = true;
+                    break;
+                }
+
+                if (wrongPositions[i].contains(word.charAt(i))) {
+                    wordToFilter = true;
+                    break;
+                }
+            }
+
+            if (!wordToFilter) {
+                filteredWords.add(word);
+            }
+        }
+
+        return filteredWords;
+    }
+
     public void add(final String word) {
         if (word.length() != Constants.WORD_LENGTH) {
             return;
@@ -42,10 +92,6 @@ public class WordleDictionary {
 
     public boolean contains(final String word) {
         return words.contains(normalize(word));
-    }
-
-    public boolean isEmpty() {
-        return words.isEmpty();
     }
 
     public static String normalize(final String word) {
