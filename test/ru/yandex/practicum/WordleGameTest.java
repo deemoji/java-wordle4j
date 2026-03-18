@@ -2,7 +2,6 @@ package ru.yandex.practicum;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
 
@@ -20,13 +19,13 @@ public class WordleGameTest {
     @BeforeEach
     public void beforeEach() {
         writer = new PrintWriter(System.out);
-        dictionary  = new WordleDictionary(List.of("ааааа", "ббббб", "ввввв", "абвгд"), writer);
+        dictionary = new WordleDictionary(List.of("ааааа", "ббббб", "ввввв", "абвгд"), writer);
         logic = new WordleGame(answer, 3, dictionary, writer);
     }
 
 
     @Test
-    void testCheckGameOverAndWinIsTrue() {
+    public void testCheckGameOverAndWinIsTrue() {
         try {
             String falseResult = logic.makeStep("ввввв");
             assertEquals("--+--", falseResult);
@@ -40,7 +39,7 @@ public class WordleGameTest {
     }
 
     @Test
-    void testCheckGameOverAndWinIsFalse() {
+    public void testCheckGameOverAndWinIsFalse() {
         try {
             String falseResult1 = logic.makeStep("ааааа");
             assertEquals("+----", falseResult1);
@@ -56,7 +55,7 @@ public class WordleGameTest {
     }
 
     @Test
-    void testCheckWordNotFoundExceptionWhenWordLengthIs6() {
+    public void testCheckWordNotFoundExceptionWhenWordLengthIs6() {
         try {
             logic.makeStep("аптека");
         } catch (WordNotFoundException e) {
@@ -67,7 +66,7 @@ public class WordleGameTest {
     }
 
     @Test
-    void testCheckWordNotFoundExceptionWhenWordIsNotInDictionary() {
+    public void testCheckWordNotFoundExceptionWhenWordIsNotInDictionary() {
         try {
             logic.makeStep("абзац");
         } catch (WordNotFoundException e) {
@@ -78,7 +77,7 @@ public class WordleGameTest {
     }
 
     @Test
-    void testCheckNotGameOverWhenWordNotFoundException() {
+    public void testCheckNotGameOverWhenWordNotFoundException() {
         try {
             logic.makeStep("ааааа");
             logic.makeStep("ббббб");

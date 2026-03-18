@@ -45,6 +45,7 @@ public class WordleGame {
     public String getAnswer() {
         return answer;
     }
+
     public boolean gameOver() {
         return steps == 0 || isWin;
     }

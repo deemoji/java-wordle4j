@@ -2,7 +2,6 @@ package ru.yandex.practicum;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -17,7 +16,7 @@ public class WordleDictionaryTest {
     private Set<Character> wrongChars;
     private Set<Character> correctChars;
     private Character[] correctPositions;
-    Set<Character>[] wrongPositions;
+    private Set<Character>[] wrongPositions;
 
     @BeforeEach
     public void beforeEach() {
@@ -39,7 +38,7 @@ public class WordleDictionaryTest {
         dictionary.add("Ёёёаё");
         dictionary.add("АбвгД");
 
-        String[] expectedWords = new String[] {"ааааа", "еееае", "абвгд"};
+        String[] expectedWords = new String[]{"ааааа", "еееае", "абвгд"};
         assertArrayEquals(expectedWords, dictionary.getWords());
     }
 
@@ -114,7 +113,7 @@ public class WordleDictionaryTest {
         wrongChars.add('б');
         wrongChars.add('р');
 
-        String[] words = new String[] {"болид", "мотор", "камаз"};
+        String[] words = new String[]{"болид", "мотор", "камаз"};
         for (String word : words) {
             dictionary.add(word);
         }
@@ -178,7 +177,7 @@ public class WordleDictionaryTest {
     }
 
     @Test
-    void testsShouldFilterWordsWhenAllFilters() {
+    public void testsShouldFilterWordsWhenAllFilters() {
         wrongChars.add('м');
         wrongChars.add('р');
 

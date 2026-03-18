@@ -54,7 +54,9 @@ public class WordleDictionary {
                     break;
                 }
             }
-            if (wordToFilter) { continue; }
+            if (wordToFilter) {
+                continue;
+            }
 
             for (char ch : correctChars) {
                 if (word.indexOf(ch) == -1) {
