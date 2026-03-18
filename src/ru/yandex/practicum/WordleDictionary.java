@@ -48,7 +48,7 @@ public class WordleDictionary {
 
         for (String word : words) {
             boolean wordToFilter = false;
-            for(int i = 0; i < word.length(); i++) {
+            for (int i = 0; i < word.length(); i++) {
                 if (bannedChars.contains(word.charAt(i))) {
                     wordToFilter = true;
                     break;
